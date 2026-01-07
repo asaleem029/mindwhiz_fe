@@ -8,7 +8,7 @@ const AddProduct = () => {
     const [price, setPrice] = useState("");
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
-    const [availability, setAvailability] = useState<"In Stock" | "Out of Stock">("In Stock");
+    const [availability, setAvailability] = useState<"in_stock" | "out_of_stock">("in_stock");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const { isAdmin, user } = useAuth();
@@ -99,7 +99,7 @@ const AddProduct = () => {
                         <label className="form-label">Availability *</label>
                         <select
                             value={availability}
-                            onChange={(e) => setAvailability(e.target.value as "In Stock" | "Out of Stock")}
+                            onChange={(e) => setAvailability(e.target.value as "in_stock" | "out_of_stock")}
                             className="form-select"
                         >
                             <option value="In Stock">In Stock</option>

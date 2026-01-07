@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 interface User {
   email: string;
-  role: 'Admin' | 'Customer';
+  role: 'admin' | 'customer';
   token: string;
 }
 
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('user');
   };
 
-  const isAdmin = user?.role === 'Admin'; // Check if the user is an Admin
+  const isAdmin = user?.role === 'admin'; // Check if the user is an Admin
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
