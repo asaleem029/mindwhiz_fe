@@ -1,40 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# E-Commerce Frontend Module
+
+A mini e-commerce module built with Next.js and React, demonstrating frontend, backend integration, and role-based access control.
+
+## Features
+
+- **Product Listing Page**: Grid layout with 3 products per row (desktop), responsive design
+- **Product Detail Modal**: Opens on "View Details" click, shows full product information
+- **Login System**: Mock authentication with role-based access (Admin/Customer)
+- **Add Product Form**: Admin-only feature to add new products
+- **Role-Based Access Control (RBAC)**: Admin users can see "Add Product" button
+- **Clean UI**: Minimal design with primary color #39B54A
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Set up environment variables (optional):
+Create a `.env.local` file in the root directory:
+```
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## Demo Credentials
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Admin**: 
+  - Email: `admin@mindwhiz.com`
+  - Password: `admin`
+  
+- **Customer**: 
+  - Email: `customer@mindwhiz.com`
+  - Password: `customer`
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+/frontend
+  /pages
+    index.tsx         # Product listing
+    login.tsx         # Login page
+    add-product.tsx   # Add product (Admin only)
+  /components
+    ProductCard.tsx   # Product card component
+    ProductModal.tsx  # Product detail modal
+  /contexts
+    AuthContext.tsx   # Authentication context
+  /utils
+    api.ts           # API utility functions
+  /styles
+    globals.css      # Global styles
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## Features Implementation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Product Listing
+- Fetches products from backend API (`GET /products`)
+- Falls back to dummy data if API is unavailable
+- 3-column grid layout on desktop, responsive on mobile
+- "Add Product" button visible only to Admin users
 
-## Deploy on Vercel
+### Product Detail Modal
+- Displays product name, image, description, price, and availability
+- "Add to Cart" button (optional functionality)
+- "Close" button to dismiss modal
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Login
+- Centered login form
+- Mock authentication with role detection
+- Redirects to product listing on success
+- Stores user session in localStorage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+### Add Product (Admin Only)
+- Form fields: Name, Description, Price, Availability, Image URL
+- Calls `POST /products` API endpoint
+- Protected route - redirects non-admin users
+
+## Design Guidelines
+
+- **Primary Color**: #39B54A (green) for buttons and accents
+- **Text Color**: Dark gray/black (#1a1a1a)
+- **Clean, minimal style** with proper spacing and typography
+- **Responsive design** for mobile, tablet, and desktop
+
+## API Integration
+
+The frontend expects a backend API running on `http://localhost:5000` (configurable via `NEXT_PUBLIC_API_URL`):
+
+- `GET /products` - List all products
+- `GET /products/:id` - Get product details
+- `POST /login` - Authenticate user
+- `POST /products` - Add new product (Admin only)
+
+## Technologies Used
+
+- **Next.js 16** - React framework
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Utility-first CSS framework
+- **Context API** - State management for authentication
+
+## Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Notes
+
+- Mock authentication is implemented for demo purposes
+- Product data falls back to dummy data if backend API is unavailable
+- Role-based access control is implemented using React Context
+- All API calls are handled through the utility function in `utils/api.ts`
