@@ -1,5 +1,5 @@
 // API utility for backend calls
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const api = {
   get: async (endpoint: string) => {

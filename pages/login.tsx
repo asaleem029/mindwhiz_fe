@@ -12,7 +12,7 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
-        
+
         const success = await login(email, password);
         if (success) {
             router.push("/");

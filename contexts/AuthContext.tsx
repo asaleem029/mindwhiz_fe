@@ -1,8 +1,10 @@
+import { api } from '@/utils/api';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 interface User {
   email: string;
   role: 'Admin' | 'Customer';
+  token: string;
 }
 
 interface AuthContextType {
@@ -27,20 +29,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      // Mock authentication fallback
-      let userData: User | null = null;
-      if (email === 'admin@mindwhiz.com' && password === 'admin') {
-        userData = { email, role: 'Admin' };
-      } else if (email === 'customer@mindwhiz.com' && password === 'customer') {
-        userData = { email, role: 'Customer' };
-      }
+      // Make an API call to the backend for authentication using api.post
+      const response = await api.post('/auth/login', {
+        email,
+        password,
+      });
 
-      if (userData) {
+      // Check if the response contains the necessary user and token fields
+      if (response.data && response.data.token && response.data.user) {
+        const data = response.data;
+
+        const userData: User = {
+          email: data.user.email,
+          role: data.user.role,
+          token: data.token, // Store token received from backend
+        };
+
         setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('user', JSON.stringify(userData)); // Save user data and token in localStorage
         return true;
       }
+
+      // If the response doesn't contain the necessary data
+      console.error("Login failed: Invalid response format or missing data", response.data);
       return false;
+
     } catch (error) {
       console.error('Login error:', error);
       return false;
@@ -52,7 +65,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('user');
   };
 
-  const isAdmin = user?.role === 'Admin';
+  const isAdmin = user?.role === 'Admin'; // Check if the user is an Admin
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAdmin }}>
